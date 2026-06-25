@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>FullScreen</key>
+			<true/>
+			<key>Icon</key>
+			<data>
+			<!-- 此处放置 Base64 编码的 PNG 图标，当前为占位图标（144x144 白色圆角方块） -->
+			iVBORw0KGgoAAAANSUhEUgAAAJAAAACQCAYAAADnRuK4AAAACXBIWXMAAAsTAAALEwEAmpwYAAABaWlDQ1BEaXNwbGF5IFAzAAB4nHWQvUvDUBTFT6tS0DqIDh0cMolD1NIKdnFoKxRFMFQFq1OafgltfCQpUnETVyn4H1jBWXCwiFRwcXAQRAcR3Zw6KbhoeN6XVNoi3sfl/Ticc7lcwBtQGSv2AijplpFMxKS11Lrke4OHnlOqZrKooiwK/v276/PR9d5PjZPj0+dxpVgsD4nlGUSx4bgJhKluEHEgiyM4wczFJwg1cw+AEhYgg5jJQcISgOwFXDEIAgB6AIBeBgBmBBAZAADsAADvAAAAAAAAMAEAAfAB8AMAA0ADgAQABIAEwAUABYAGAAaABwAHgAgACIAJAAmACgAKgAsAC4AMAAyADQANgA4ADoAPAA+AEAAQgBEAEYASABKAEwATgBQAFIAVABWAFgAWgBcAF4AYABiAGQAZgBoAGoAbABuAHAAcgB0AHYAeAB6AHwAfgCAAIIAhACGAIgAigCMAI4AkACSAJQAlgCYAMAAAACwAQAABAAAAAQAAAAAAAAAAAAAAAAAAAAA
+			</data>
+			<key>IsRemovable</key>
+			<true/>
+			<key>Label</key>
+			<string>反反的小世界</string>
+			<key>PayloadDescription</key>
+			<string>将 ffoo.top 添加到主屏幕</string>
+			<key>PayloadDisplayName</key>
+			<string>反反的小世界 - Web Clip</string>
+			<key>PayloadIdentifier</key>
+			<string>top.ffoo.webclip</string>
+			<key>PayloadType</key>
+			<string>com.apple.webClip.managed</string>
+			<key>PayloadUUID</key>
+			<string>A1B2C3D4-E5F6-7890-ABCD-EF1234567890</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>Precomposed</key>
+			<true/>
+			<key>URL</key>
+			<string>https://ffoo.top</string>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>安装此描述文件可将 ffoo.top 添加到主屏幕</string>
+	<key>PayloadDisplayName</key>
+	<string>反反的小世界</string>
+	<key>PayloadIdentifier</key>
+	<string>top.ffoo.profile</string>
+	<key>PayloadOrganization</key>
+	<string>FFF</string>
+	<key>PayloadRemovalDisallowed</key>
+	<false/>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>B2C3D4E5-F6A7-8901-BCDE-F12345678901</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
