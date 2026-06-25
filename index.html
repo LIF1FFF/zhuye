@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="FFF Home">
+    <meta name="keywords" content="Dmego,Homepage">
+    <meta name="author" content="Dmego">
+    <title>反反的小世界</title>
+    <!-- 使用本地CSS文件替代CDN，减少网络请求 -->
+    <link rel="stylesheet" type="text/css" href="./assets/css/onlinewebfonts.css"/>
+    <link rel="stylesheet" type="text/css" href="./assets/css/vno.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/iconfont.css">
+    <link rel="apple-touch-icon" href="./assets/img/favicon.png">
+    <link rel="icon" href="./assets/img/favicon.ico">
+    <style>
+        /* 隐藏移动端菜单按钮 */
+        .mobile.btn-mobile-menu {
+            display: none !important;
+        }
+        
+        /* 设置自定义壁纸 */
+        .panel-cover {
+            background-image: url('./assets/img/bz.jpg') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+        }
+        
+        /* 背景朦胧效果 */
+        .panel-cover--overlay {
+            opacity: 0.5 !important;
+            background: rgba(0, 0, 0, 0.3) !important;
+            backdrop-filter: blur(2px) !important;
+            -webkit-backdrop-filter: blur(2px) !important;
+        }
+        
+        /* 为背景添加额外的模糊层 */
+        .panel-cover::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            background: inherit !important;
+            filter: blur(3px) brightness(0.7) !important;
+            -webkit-filter: blur(3px) brightness(0.7) !important;
+            z-index: -1 !important;
+        }
+        
+        /* 导航区域透明 */
+        .navigation-wrapper {
+            background: transparent !important;
+        }
+        .cover-navigation {
+            background: transparent !important;
+        }
+        .navigation {
+            background: transparent !important;
+        }
+        
+        /* 隐藏导航区域后面的横线 */
+        .navigation-wrapper + hr,
+        .navigation-wrapper ~ hr {
+            display: none !important;
+        }
+        
+        /* 保留动画效果 */
+        .iUp {
+            animation-name: iUp !important;
+        }
+        
+        /* QQ图标半透明 */
+        .icon-qq {
+            opacity: 0.6 !important;
+        }
+        
+        /* 通用弹窗样式 */
+        .wechat-modal, .qq-modal, .about-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .wechat-modal-content, .qq-modal-content, .about-modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 300px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .wechat-id, .qq-id {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+        .wechat-qr, .qq-qr {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .wechat-qr img, .qq-qr img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .copy-btn {
+            background-color: #07c160;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background-color: #06ad56; }
+        .close-modal {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+        }
+        .close-modal:hover { color: #ccc; }
+        
+        /* 工具弹窗按钮样式 */
+        .tool-btn {
+            display: inline-block;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 8px;
+            font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            text-align: center;
+        }
+        .tool-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.7);
+            transform: scale(1.03);
+        }
+        
+        /* 手机端强制显示所有内容 */
+        @media screen and (max-width: 900px) {
+            .panel-main__content {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                position: relative !important;
+                top: auto !important;
+                text-align: center !important;
+            }
+            .navigation-wrapper {
+                display: block !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                margin-top: 0px !important;
+                position: relative !important;
+                top: auto !important;
+                text-align: center !important;
+            }
+            .cover-navigation {
+                opacity: 1 !important;
+                visibility: visible !important;
+                display: block !important;
+                text-align: center !important;
+            }
+            .navigation {
+                opacity: 1 !important;
+                visibility: visible !important;
+                display: flex !important;
+                justify-content: center !important;
+            }
+            .navigation__item {
+                opacity: 1 !important;
+                visibility: visible !important;
+                display: inline-block !important;
+            }
+            h1 {
+                text-align: center !important;
+            }
+            .panel-cover__divider,
+            hr {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header id="panel" class="panel-cover">
+        <div class="panel-main">
+            <div class="panel-main__inner panel-inverted">
+                <div class="panel-main__content">
+                    <div style="margin-bottom: 30px;">            
+                        <a href="#" title="" class="blog-button">
+                            <div class="img"><img src="./assets/img/tx.jpg" alt="img" class="js-avatar profilepic"></div>
+                        </a>
+                    </div>
+                    <h1 style="font-family: Arial, sans-serif;">
+                        <a href="#" title="Dmego Home">FFF</a>
+                    </h1>
+                    <hr class="panel-cover__divider iUp" style="margin-bottom: 15px;" />
+                    <div class="navigation-wrapper iUp">
+                        <nav class="cover-navigation cover-navigation--primary">
+                            <ul class="navigation" style="display: flex; gap: 15px; list-style: none; padding: 0;">
+                                <li class="navigation__item" style="display: inline-block;"><a href="http://b.ffoo.top/" class="blog-button" target="_blank" style="display: inline-block; padding: 5px 10px; border: 1px solid #fff; text-decoration: none; font-size: 14px; border-radius: 8px;">博客</a></li>
+                                <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showToolModal()" class="blog-button" style="display: inline-block; padding: 5px 10px; border: 1px solid #fff; text-decoration: none; font-size: 14px; border-radius: 8px;">工具</a></li>
+                                <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showQQModal()" class="blog-button" style="display: inline-block; padding: 5px 10px; border: 1px solid #fff; text-decoration: none; font-size: 14px; border-radius: 8px;">QQ</a></li>
+                                <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showLinksModal()" class="blog-button" style="display: inline-block; padding: 5px 10px; border: 1px solid #fff; text-decoration: none; font-size: 14px; border-radius: 8px;">友链</a></li>
+                            </ul>
+
+                        </nav>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="panel-cover--overlay cover-slate"></div>
+        </div>
+        <!-- <div class="beian iUp">
+            <a class="icp" href="http://www.miitbeian.gov.cn/publish/query/indexFirst.action" target="_blank">XXX</a>
+            <a class="gwab" href="http://www.beian.gov.cn/portal/recordQuery" target="_blank">XXX</a>
+        </div> -->
+        <div class="copyright iUp" style="position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; color: #ffffff; font-size: 12px;">
+            <p style="margin: 0;">
+                © 2025 FFF. All Rights Reserved.<br>
+                <span id="runtime" style="font-size: 12px;"></span>
+            </p>
+        </div>
+    </header>
+    
+    <!-- 微信弹窗 -->
+    <div id="wechatModal" class="wechat-modal">
+        <div class="wechat-modal-content">
+            <span class="close-modal" onclick="closeWechatModal()">&times;</span>
+            <div class="wechat-id">FanVee</div>
+            <div class="wechat-qr">
+                <img src="./assets/img/wx.jpg" alt="微信二维码">
+            </div>
+            <button class="copy-btn" onclick="copyWechatId()">复制微信号</button>
+        </div>
+    </div>
+    
+    <!-- QQ弹窗 -->
+    <div id="qqModal" class="qq-modal">
+        <div class="qq-modal-content">
+            <span class="close-modal" onclick="closeQQModal()">&times;</span>
+            <div class="qq-qr">
+                <img src="./assets/img/qq.jpg" alt="QQ二维码">
+            </div>
+            <button class="copy-btn" onclick="copyQQId()">复制QQ号</button>
+        </div>
+    </div>
+    
+    <!-- 友链弹窗 -->
+    <div id="linksModal" class="about-modal">
+        <div class="about-modal-content">
+            <span class="close-modal" onclick="closeLinksModal()">&times;</span>
+            <div class="about-content">
+                <p style="font-size: 14px; color: #ffffff; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 12px;">欢迎各位站长交换友链，请发送网站名称和链接至邮箱：<span style="color: #4da6ff;">2660238308@qq.com</span></p>
+                <p>共享资源站点：<a href="http://www.winapps.cc" target="_blank">www.winapps.cc</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 工具链接弹窗 -->
+    <div id="toolModal" class="qq-modal">
+        <div class="qq-modal-content">
+            <span class="close-modal" onclick="closeToolModal()">&times;</span>
+            <div class="qq-id">常用工具</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;">
+                <a href="https://v2rayclient.org/download/v2rayn/v2rayN-windows-64-desktop.zip" target="_blank" class="tool-btn">V2Ray</a>
+                <a href="https://kv.ffoo.top/admin" target="_blank" class="tool-btn">Cloudflare代理</a>
+                <a href="https://music.ffoo.top/" target="_blank" class="tool-btn">音乐</a>
+                <a href="https://www.baidu.com" target="_blank" class="tool-btn">百度</a>
+                <a href="https://www.github.com" target="_blank" class="tool-btn">GitHub</a>
+                <a href="https://translate.google.com" target="_blank" class="tool-btn">翻译</a>
+                <a href="https://mail.qq.com" target="_blank" class="tool-btn">QQ邮箱</a>
+                <a href="https://pan.baidu.com" target="_blank" class="tool-btn">网盘</a>
+                <a href="https://www.bilibili.com" target="_blank" class="tool-btn">B站</a>
+                <a href="https://www.zhihu.com" target="_blank" class="tool-btn">知乎</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 通用弹窗显示/关闭
+        function showModal(id) { document.getElementById(id).style.display = 'block'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        
+        // 各弹窗快捷函数
+        function showWechatModal() { showModal('wechatModal'); }
+        function closeWechatModal() { closeModal('wechatModal'); }
+        function showQQModal() { showModal('qqModal'); }
+        function closeQQModal() { closeModal('qqModal'); }
+        function showLinksModal() { showModal('linksModal'); }
+        function closeLinksModal() { closeModal('linksModal'); }
+        function showToolModal() { showModal('toolModal'); }
+        function closeToolModal() { closeModal('toolModal'); }
+        
+        // 复制微信号
+        function copyWechatId() {
+            var id = 'FanVee';
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(id).then(function() { alert('微信号已复制: ' + id); closeWechatModal(); });
+            } else {
+                var ta = document.createElement('textarea');
+                ta.value = id; document.body.appendChild(ta); ta.select();
+                document.execCommand('copy'); document.body.removeChild(ta);
+                alert('微信号已复制: ' + id); closeWechatModal();
+            }
+        }
+        
+        // 复制QQ号
+        function copyQQId() {
+            var id = '2660238308';
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(id).then(function() { alert('QQ号已复制: ' + id); closeQQModal(); });
+            } else {
+                var ta = document.createElement('textarea');
+                ta.value = id; document.body.appendChild(ta); ta.select();
+                document.execCommand('copy'); document.body.removeChild(ta);
+                alert('QQ号已复制: ' + id); closeQQModal();
+            }
+        }
+        
+        // 点击弹窗外部关闭
+        window.onclick = function(e) {
+            ['wechatModal','qqModal','linksModal','toolModal'].forEach(function(id) {
+                if (e.target == document.getElementById(id)) closeModal(id);
+            });
+        }
+        
+        // 网站运行时长计时
+        function showRuntime() {
+            const startTime = new Date('2020-12-01 00:00:00');
+            const now = new Date();
+            const diff = now - startTime;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            const runtimeElement = document.getElementById('runtime');
+            if (runtimeElement) {
+                runtimeElement.textContent = `网站已运行 ${days} 天 ${hours} 小时 ${minutes} 分钟 ${seconds} 秒`;
+            }
+        }
+        
+        // 页面加载后立即显示并每秒更新
+        showRuntime();
+        setInterval(showRuntime, 1000);
+        
+        // 禁止调出开发者控制台
+        // 禁止右键菜单
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+        
+        // 禁止F12、Ctrl+Shift+I、Ctrl+Shift+J、Ctrl+U等快捷键
+        document.addEventListener('keydown', function(e) {
+            // F12
+            if (e.keyCode === 123) {
+                e.preventDefault();
+            }
+            // Ctrl+Shift+I
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
+                e.preventDefault();
+            }
+            // Ctrl+Shift+J
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
+                e.preventDefault();
+            }
+            // Ctrl+U
+            if (e.ctrlKey && e.keyCode === 85) {
+                e.preventDefault();
+            }
+        });
+    </script>
+    <!-- 使用本地JavaScript文件替代CDN，减少网络请求 -->
+    <script type="text/javascript" src="./assets/js/jquery.min.js" defer></script>
+    <script type="text/javascript" src="./assets/js/main.js" defer></script>
+</body>
+</html>
