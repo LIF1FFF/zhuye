@@ -287,12 +287,11 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;">
                 <a href="https://dot.karing.app/client.html?tag=windows-installer-stable" class="tool-btn">Karing</a>
                 <a href="https://kv.ffoo.top/admin" target="_blank" class="tool-btn">Cloudflare代理</a>
-                <a href="https://music.ffoo.top" target="_blank" class="tool-btn">音乐</a>
+                <a href="https://central.github.com/deployments/desktop/desktop/latest/win32" target="_blank" class="tool-btn">GithubDesktop</a>
+                <a href="https://github.com/robotze/GithubDesktopZhTool/releases" target="_blank" class="tool-btn">汉化工具</a>
                 <a href="https://www.codebuddy.cn" target="_blank" class="tool-btn">codebuddy</a>
-                <a href="https://github.com/LIF1FFF" target="_blank" class="tool-btn">GitHub</a>
+                <a href="https://music.ffoo.top" target="_blank" class="tool-btn">音乐</a>
                 <a href="https://www.kkys03.com" target="_blank" class="tool-btn">可可影视</a>
-                <a href="https://mail.qq.com" target="_blank" class="tool-btn">QQ邮箱</a>
-                <a href="https://pan.baidu.com" target="_blank" class="tool-btn">网盘</a>
             </div>
         </div>
     </div>
@@ -312,19 +311,7 @@
         function showToolModal() { showModal('toolModal'); }
         function closeToolModal() { closeModal('toolModal'); }
         
-        // 复制微信号
-        function copyWechatId() {
-            var id = 'FanVee';
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(id).then(function() { alert('微信号已复制: ' + id); closeWechatModal(); });
-            } else {
-                var ta = document.createElement('textarea');
-                ta.value = id; document.body.appendChild(ta); ta.select();
-                document.execCommand('copy'); document.body.removeChild(ta);
-                alert('微信号已复制: ' + id); closeWechatModal();
-            }
-        }
-        
+
         // 复制QQ号
         function copyQQId() {
             var id = '2660238308';
