@@ -388,6 +388,18 @@
                 <a href="https://github.com/LIF1FFF" target="_blank" class="tool-btn">GitHub</a>
                 <a href="javascript:void(0);" onclick="closeCallMeModal();showXcxModal();" class="tool-btn">微信小程序</a>
                 <a href="javascript:void(0);" onclick="closeCallMeModal();showGzhModal();" class="tool-btn">公众号</a>
+                <a href="javascript:void(0);" onclick="closeCallMeModal();showZanShangModal();" class="tool-btn">赞赏</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 赞赏弹窗 -->
+    <div id="zanShangModal" class="qq-modal">
+        <div class="qq-modal-content">
+            <span class="close-modal" onclick="closeZanShangModal()">&times;</span>
+            <div class="qq-id">赞赏</div>
+            <div class="qq-qr">
+                <img src="./assets/img/zs.jpg" alt="赞赏码">
             </div>
         </div>
     </div>
@@ -452,6 +464,8 @@
         function closeXcxModal() { closeModal('xcxModal'); }
         function showGzhModal() { showModal('gzhModal'); }
         function closeGzhModal() { closeModal('gzhModal'); }
+        function showZanShangModal() { showModal('zanShangModal'); }
+        function closeZanShangModal() { closeModal('zanShangModal'); }
         
         // 博客弹窗
         var blogIframeLoaded = false;
@@ -505,7 +519,7 @@
         
         // 点击弹窗外部关闭
         window.onclick = function(e) {
-            ['qqModal','linksModal','toolModal','callMeModal','emailModal','xcxModal','gzhModal'].forEach(function(id) {
+            ['qqModal','linksModal','toolModal','callMeModal','emailModal','xcxModal','gzhModal','zanShangModal'].forEach(function(id) {
                 if (e.target == document.getElementById(id)) closeModal(id);
             });
             // 博客弹窗点击外部关闭
