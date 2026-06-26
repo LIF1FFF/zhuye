@@ -52,6 +52,15 @@
             z-index: -1 !important;
         }
         
+        /* 头像和标题去除手指光标，导航按钮保持手指 */
+        .panel-main__content > div a,
+        .panel-main__content h1 a {
+            cursor: default;
+        }
+        .navigation .navigation__item a {
+            cursor: pointer;
+        }
+        
         /* 导航区域透明 */
         .navigation-wrapper {
             background: transparent !important;
@@ -69,18 +78,10 @@
             display: none !important;
         }
         
-        /* 保留动画效果 */
-        .iUp {
-            animation-name: iUp !important;
-        }
-        
-        /* QQ图标半透明 */
-        .icon-qq {
-            opacity: 0.6 !important;
-        }
+        /* 动画效果已移除 */
         
         /* 通用弹窗样式 */
-        .wechat-modal, .qq-modal, .about-modal {
+        .qq-modal {
             display: none;
             position: fixed;
             z-index: 9999;
@@ -90,34 +91,34 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
         }
-        .wechat-modal-content, .qq-modal-content, .about-modal-content {
+        .qq-modal-content {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             padding: 40px;
             border-radius: 10px;
             text-align: center;
             min-width: 300px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
         }
-        .wechat-id, .qq-id {
+        .qq-id {
             font-size: 24px;
             font-weight: bold;
             color: #ffffff;
             margin-bottom: 20px;
         }
-        .wechat-qr, .qq-qr {
+        .qq-qr {
             width: 200px;
             height: 200px;
             margin: 0 auto 20px;
             border-radius: 15px;
             overflow: hidden;
         }
-        .wechat-qr img, .qq-qr img {
+        .qq-qr img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -147,9 +148,9 @@
         .tool-btn {
             display: inline-block;
             padding: 10px 16px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.22);
             color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 8px;
             font-size: 14px;
             text-decoration: none;
@@ -159,8 +160,8 @@
             text-align: center;
         }
         .tool-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.38);
+            border-color: rgba(255, 255, 255, 0.8);
             transform: scale(1.03);
         }
         
@@ -224,17 +225,17 @@
                             <div class="img"><img src="./assets/img/tx.jpg" alt="img" class="js-avatar profilepic"></div>
                         </a>
                     </div>
-                    <h1 style="font-family: Arial, sans-serif;">
+                    <h1 style="font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-weight: 600; font-size: 2em;">
                         <a href="#" title="Dmego Home">FFF</a>
                     </h1>
-                    <hr class="panel-cover__divider iUp" style="margin-bottom: 15px;" />
-                    <div class="navigation-wrapper iUp">
+                    <hr class="panel-cover__divider" style="margin-bottom: 15px;" />
+                    <div class="navigation-wrapper">
                         <nav class="cover-navigation cover-navigation--primary">
                             <ul class="navigation" style="display: flex; gap: 15px; list-style: none; padding: 0;">
-                                <li class="navigation__item" style="display: inline-block;"><a href="https://blog.ffoo.top/" class="blog-button" target="_blank" style="display: inline-block; padding: 5px 10px; border: 1px solid #fff; text-decoration: none; font-size: 14px; border-radius: 8px;">博客</a></li>
-                                <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showToolModal()" class="blog-button" style="display: inline-block; padding: 5px 10px; border: 1px solid #fff; text-decoration: none; font-size: 14px; border-radius: 8px;">工具</a></li>
-                                <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showQQModal()" class="blog-button" style="display: inline-block; padding: 5px 10px; border: 1px solid #fff; text-decoration: none; font-size: 14px; border-radius: 8px;">QQ</a></li>
-                                <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showLinksModal()" class="blog-button" style="display: inline-block; padding: 5px 10px; border: 1px solid #fff; text-decoration: none; font-size: 14px; border-radius: 8px;">友链</a></li>
+                                <li class="navigation__item" style="display: inline-block;"><a href="https://blog.ffoo.top/" class="blog-button" target="_blank" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">博客</a></li>
+                                <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showToolModal()" class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">工具</a></li>
+                                <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showLinksModal()" class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">友链</a></li>
+                                <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showCallMeModal()" class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">Call Me</a></li>
                             </ul>
 
                         </nav>
@@ -245,11 +246,7 @@
             </div>
             <div class="panel-cover--overlay cover-slate"></div>
         </div>
-        <!-- <div class="beian iUp">
-            <a class="icp" href="http://www.miitbeian.gov.cn/publish/query/indexFirst.action" target="_blank">XXX</a>
-            <a class="gwab" href="http://www.beian.gov.cn/portal/recordQuery" target="_blank">XXX</a>
-        </div> -->
-        <div class="copyright iUp" style="position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; color: #ffffff; font-size: 12px;">
+        <div class="copyright" style="position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; color: #ffffff; font-size: 12px;">
             <p style="margin: 0;">
                 © 2026 FFF. All Rights Reserved.<br>
                 <span id="runtime" style="font-size: 12px;"></span>
@@ -261,6 +258,7 @@
     <div id="qqModal" class="qq-modal">
         <div class="qq-modal-content">
             <span class="close-modal" onclick="closeQQModal()">&times;</span>
+            <div class="qq-id">QQ</div>
             <div class="qq-qr">
                 <img src="./assets/img/qq.jpg" alt="QQ二维码">
             </div>
@@ -268,13 +266,61 @@
         </div>
     </div>
     
+    <!-- 邮箱弹窗 -->
+    <div id="emailModal" class="qq-modal">
+        <div class="qq-modal-content">
+            <span class="close-modal" onclick="closeEmailModal()">&times;</span>
+            <div class="qq-id">邮箱</div>
+            <div style="font-weight: bold; color: #ffffff; margin-bottom: 20px; font-size: 16px;">2660238308@qq.com</div>
+            <button class="copy-btn" onclick="copyEmail()">复制邮箱</button>
+        </div>
+    </div>
+    
+    <!-- 小程序弹窗 -->
+    <div id="xcxModal" class="qq-modal">
+        <div class="qq-modal-content">
+            <span class="close-modal" onclick="closeXcxModal()">&times;</span>
+            <div class="qq-id">微信小程序</div>
+            <div class="qq-qr">
+                <img src="./assets/img/wxxcx.jpg" alt="小程序码">
+            </div>
+        </div>
+    </div>
+    
+    <!-- 公众号弹窗 -->
+    <div id="gzhModal" class="qq-modal">
+        <div class="qq-modal-content">
+            <span class="close-modal" onclick="closeGzhModal()">&times;</span>
+            <div class="qq-id">公众号</div>
+            <div class="qq-qr">
+                <img src="./assets/img/wxgzh.jpg" alt="公众号二维码">
+            </div>
+        </div>
+    </div>
+    
+    <!-- Call Me 弹窗（联系菜单） -->
+    <div id="callMeModal" class="qq-modal">
+        <div class="qq-modal-content">
+            <span class="close-modal" onclick="closeCallMeModal()">&times;</span>
+            <div class="qq-id">联系方式</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;">
+                <a href="javascript:void(0);" onclick="closeCallMeModal();showQQModal();" class="tool-btn">QQ</a>
+                <a href="javascript:void(0);" onclick="closeCallMeModal();showEmailModal();" class="tool-btn">邮箱</a>
+                <a href="https://github.com/LIF1FFF" target="_blank" class="tool-btn">GitHub</a>
+                <a href="javascript:void(0);" onclick="closeCallMeModal();showXcxModal();" class="tool-btn">微信小程序</a>
+                <a href="javascript:void(0);" onclick="closeCallMeModal();showGzhModal();" class="tool-btn">公众号</a>
+            </div>
+        </div>
+    </div>
+    
     <!-- 友链弹窗 -->
-    <div id="linksModal" class="about-modal">
-        <div class="about-modal-content">
+    <div id="linksModal" class="qq-modal">
+        <div class="qq-modal-content">
             <span class="close-modal" onclick="closeLinksModal()">&times;</span>
-            <div class="about-content">
-                <p style="font-size: 14px; color: #ffffff; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 12px;">欢迎各位站长交换友链，请发送网站名称和链接至邮箱：<span style="color: #4da6ff;">2660238308@qq.com</span></p>
-                <p>共享资源站点：<a href="http://www.winapps.cc" target="_blank">www.winapps.cc</a></p>
+            <div class="qq-id">友情链接</div>
+            <p style="font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 12px;">欢迎交换友链，请发送至 <span style="color: #4da6ff;">2660238308@qq.com</span></p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;">
+                <a href="http://www.winapps.cc" target="_blank" class="tool-btn">共享资源站点</a>
             </div>
         </div>
     </div>
@@ -302,14 +348,20 @@
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
         
         // 各弹窗快捷函数
-        function showWechatModal() { showModal('wechatModal'); }
-        function closeWechatModal() { closeModal('wechatModal'); }
         function showQQModal() { showModal('qqModal'); }
         function closeQQModal() { closeModal('qqModal'); }
         function showLinksModal() { showModal('linksModal'); }
         function closeLinksModal() { closeModal('linksModal'); }
         function showToolModal() { showModal('toolModal'); }
         function closeToolModal() { closeModal('toolModal'); }
+        function showCallMeModal() { showModal('callMeModal'); }
+        function closeCallMeModal() { closeModal('callMeModal'); }
+        function showEmailModal() { showModal('emailModal'); }
+        function closeEmailModal() { closeModal('emailModal'); }
+        function showXcxModal() { showModal('xcxModal'); }
+        function closeXcxModal() { closeModal('xcxModal'); }
+        function showGzhModal() { showModal('gzhModal'); }
+        function closeGzhModal() { closeModal('gzhModal'); }
         
 
         // 复制QQ号
@@ -325,9 +377,22 @@
             }
         }
         
+        // 复制邮箱
+        function copyEmail() {
+            var email = '2660238308@qq.com';
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(email).then(function() { alert('邮箱已复制: ' + email); closeEmailModal(); });
+            } else {
+                var ta = document.createElement('textarea');
+                ta.value = email; document.body.appendChild(ta); ta.select();
+                document.execCommand('copy'); document.body.removeChild(ta);
+                alert('邮箱已复制: ' + email); closeEmailModal();
+            }
+        }
+        
         // 点击弹窗外部关闭
         window.onclick = function(e) {
-            ['wechatModal','qqModal','linksModal','toolModal'].forEach(function(id) {
+            ['qqModal','linksModal','toolModal','callMeModal','emailModal','xcxModal','gzhModal'].forEach(function(id) {
                 if (e.target == document.getElementById(id)) closeModal(id);
             });
         }
