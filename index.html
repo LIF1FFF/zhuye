@@ -165,6 +165,85 @@
             transform: scale(1.03);
         }
         
+        /* ====== 博客弹窗样式 ====== */
+        .blog-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.65);
+            animation: fadeIn 0.3s ease;
+        }
+        .blog-modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90vw;
+            max-width: 900px;
+            height: 85vh;
+            background: #1d1f21;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+        }
+        .blog-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            z-index: 10001;
+            width: 30px;
+            height: 30px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #888;
+            cursor: pointer;
+            line-height: 30px;
+            text-align: center;
+            transition: color 0.2s;
+            background: none;
+            border: none;
+        }
+        .blog-modal-close:hover {
+            color: #fff;
+        }
+        .blog-modal-body {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+        .blog-modal-body iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .blog-modal-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #666;
+            font-size: 14px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* 博客弹窗响应式 */
+        @media screen and (max-width: 768px) {
+            .blog-modal-content {
+                width: 96vw;
+                height: 90vh;
+                border-radius: 8px;
+            }
+        }
+        
         /* 手机端强制显示所有内容 */
         @media screen and (max-width: 900px) {
             .panel-main__content {
@@ -232,7 +311,7 @@
                     <div class="navigation-wrapper">
                         <nav class="cover-navigation cover-navigation--primary">
                             <ul class="navigation" style="display: flex; gap: 15px; list-style: none; padding: 0;">
-                                <li class="navigation__item" style="display: inline-block;"><a href="https://blog.ffoo.top/" class="blog-button" target="_blank" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">博客</a></li>
+                                <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showBlogModal()" class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">博客</a></li>
                                 <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showToolModal()" class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">工具</a></li>
                                 <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showLinksModal()" class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">友链</a></li>
                                 <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showCallMeModal()" class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">Call Me</a></li>
@@ -325,6 +404,17 @@
         </div>
     </div>
     
+    <!-- 博客弹窗 -->
+    <div id="blogModal" class="blog-modal">
+        <div class="blog-modal-content">
+            <div class="blog-modal-body" id="blogModalBody">
+                <button class="blog-modal-close" onclick="closeBlogModal()">&times;</button>
+                <div class="blog-modal-loading">加载中...</div>
+                <iframe id="blogIframe" src="" style="display:none;" onload="onBlogIframeLoad()"></iframe>
+            </div>
+        </div>
+    </div>
+    
     <!-- 工具链接弹窗 -->
     <div id="toolModal" class="qq-modal">
         <div class="qq-modal-content">
@@ -363,6 +453,29 @@
         function showGzhModal() { showModal('gzhModal'); }
         function closeGzhModal() { closeModal('gzhModal'); }
         
+        // 博客弹窗
+        var blogIframeLoaded = false;
+        // ====== 博客地址配置 ======
+        // 本地开发用相对路径，部署时改为你的博客域名（如 'https://blog.ffoo.top/'）
+        var BLOG_URL = '../Blog/index.html';
+        function showBlogModal() {
+            var modal = document.getElementById('blogModal');
+            modal.style.display = 'block';
+            if (!blogIframeLoaded) {
+                var iframe = document.getElementById('blogIframe');
+                iframe.src = BLOG_URL;
+            }
+        }
+        function closeBlogModal() {
+            document.getElementById('blogModal').style.display = 'none';
+        }
+        function onBlogIframeLoad() {
+            blogIframeLoaded = true;
+            document.getElementById('blogIframe').style.display = '';
+            var loadingEl = document.querySelector('.blog-modal-loading');
+            if (loadingEl) loadingEl.style.display = 'none';
+        }
+        
 
         // 复制QQ号
         function copyQQId() {
@@ -395,6 +508,10 @@
             ['qqModal','linksModal','toolModal','callMeModal','emailModal','xcxModal','gzhModal'].forEach(function(id) {
                 if (e.target == document.getElementById(id)) closeModal(id);
             });
+            // 博客弹窗点击外部关闭
+            if (e.target == document.getElementById('blogModal')) {
+                closeBlogModal();
+            }
         }
         
         // 网站运行时长计时
