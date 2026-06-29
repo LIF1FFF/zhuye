@@ -80,6 +80,25 @@
         
         /* 动画效果已移除 */
         
+        /* 维护/关于页面文字样式 */
+        .maintenance-text {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            font-weight: 600;
+            font-size: 2em;
+            color: #ffffff;
+            letter-spacing: 2px;
+        }
+        .page-text {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            font-weight: 600;
+            font-size: 2em;
+            color: #ffffff;
+            letter-spacing: 2px;
+            line-height: 1.6;
+            max-width: 540px;
+            margin: 0 auto;
+        }
+
         /* 通用弹窗样式 */
         .qq-modal {
             display: none;
@@ -299,36 +318,45 @@
         <div class="panel-main">
             <div class="panel-main__inner panel-inverted">
                 <div class="panel-main__content">
-                    <div style="margin-bottom: 30px;">            
-                        <a href="#" title="" class="blog-button">
-                            <div class="img"><img src="./assets/img/tx.jpg" alt="img" class="js-avatar profilepic"></div>
-                        </a>
+                    <!-- 状态1：正常主页 -->
+                    <div id="status-normal">
+                        <div style="margin-bottom: 30px;">            
+                            <a href="#" title="" class="blog-button">
+                                <div class="img"><img src="./assets/img/tx.jpg" alt="img" class="js-avatar profilepic"></div>
+                            </a>
+                        </div>
+                        <h1 style="font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-weight: 600; font-size: 2em;">
+                            <a href="#" title="Dmego Home">FFF</a>
+                        </h1>
+                        <hr class="panel-cover__divider" style="margin-bottom: 15px;" />
+                        <div class="navigation-wrapper">
+                            <nav class="cover-navigation cover-navigation--primary">
+                                <ul class="navigation" style="display: flex; gap: 15px; list-style: none; padding: 0;">
+                                    <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showBlogModal()" class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">博客</a></li>
+                                    <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showToolModal()" class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">工具</a></li>
+                                    <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showLinksModal()" class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">友链</a></li>
+                                    <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showCallMeModal()" class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">Call Me</a></li>
+                                </ul>
+
+                            </nav>
+                        </div>
                     </div>
-                    <h1 style="font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-weight: 600; font-size: 2em;">
-                        <a href="#" title="Dmego Home">FFF</a>
-                    </h1>
-                    <hr class="panel-cover__divider" style="margin-bottom: 15px;" />
-                    <div class="navigation-wrapper">
-                        <nav class="cover-navigation cover-navigation--primary">
-                            <ul class="navigation" style="display: flex; gap: 15px; list-style: none; padding: 0;">
-                                <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showBlogModal()" class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">博客</a></li>
-                                <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showToolModal()" class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">工具</a></li>
-                                <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showLinksModal()" class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">友链</a></li>
-                                <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showCallMeModal()" class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">Call Me</a></li>
-                            </ul>
-
-                        </nav>
+                    <!-- 状态2：维护页面 -->
+                    <div id="status-maintenance" style="display:none;">
+                        <p class="maintenance-text">网站正在维护　　请耐心等待</p>
                     </div>
-
-
+                    <!-- 状态3：关于页面 -->
+                    <div id="status-about" style="display:none;">
+                        <p class="page-text">本网站是个人网站 主要内容是放置一些关于编程方面的资料 包括技术难点和解决方案 比如易语言方面的资料 用于后期方便自己查看和回顾</p>
+                    </div>
                 </div>
             </div>
             <div class="panel-cover--overlay cover-slate"></div>
         </div>
         <div class="copyright" style="position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; color: #ffffff; font-size: 12px;">
             <p style="margin: 0;">
-                © 2026 FFF. All Rights Reserved.<br>
-                <span id="runtime" style="font-size: 12px;"></span>
+                <span id="runtime" style="font-size: 12px;"></span><br>
+                &copy; 2026 FFF. All Rights Reserved.&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://beian.miit.gov.cn/" target="_blank" style="color:#ffffff;text-decoration:none;font-size:12px;">豫ICP备2021016842号-3</a>
             </p>
         </div>
     </header>
@@ -445,6 +473,19 @@
     </div>
     
     <script>
+        // ====== 网站展示状态 ======
+        // 1 = 正常主页   2 = 维护页面   3 = 备案页面
+        // 地址栏始终显示 index.html
+        var SITE_STATUS = 1;
+        if (SITE_STATUS === 2) {
+            document.getElementById('status-normal').style.display = 'none';
+            document.getElementById('status-maintenance').style.display = '';
+        }
+        if (SITE_STATUS === 3) {
+            document.getElementById('status-normal').style.display = 'none';
+            document.getElementById('status-about').style.display = '';
+        }
+
         // 通用弹窗显示/关闭
         function showModal(id) { document.getElementById(id).style.display = 'block'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
