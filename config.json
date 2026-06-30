@@ -1,0 +1,25 @@
+{
+  "nav": [
+    { "text": "博客", "url": "https://blog.ffoo.top/", "target": "_blank" },
+    { "text": "工具", "url": "javascript:void(0);", "onclick": "showToolModal()" },
+    { "text": "友链", "url": "javascript:void(0);", "onclick": "showLinksModal()" },
+    { "text": "Call Me", "url": "javascript:void(0);", "onclick": "showCallMeModal()" }
+  ],
+  "tools": [
+    { "text": "个人网盘", "url": "https://1665576.share.123pan.cn/123pan/QajA-FfP4h", "target": "_blank" },
+    { "text": "Cloudflare代理", "url": "https://v.ffoo.top/admin", "target": "_blank" },
+    { "text": "codebuddy", "url": "https://www.codebuddy.cn", "target": "_blank" },
+    { "text": "可可影视", "url": "https://www.kkys03.com", "target": "_blank" }
+  ],
+  "friends": [
+    { "text": "共享资源站点", "url": "http://www.winapps.cc", "target": "_blank" }
+  ],
+  "callme": [
+    { "text": "QQ", "onclick": "closeCallMeModal();showQQModal()" },
+    { "text": "邮箱", "onclick": "closeCallMeModal();showEmailModal()" },
+    { "text": "GitHub", "url": "https://github.com/LIF1FFF", "target": "_blank" },
+    { "text": "微信小程序", "onclick": "closeCallMeModal();showXcxModal()" },
+    { "text": "公众号", "onclick": "closeCallMeModal();showGzhModal()" },
+    { "text": "赞赏", "onclick": "closeCallMeModal();showZanShangModal()" }
+  ]
+}

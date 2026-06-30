@@ -252,13 +252,8 @@
                         <hr class="panel-cover__divider" style="margin-bottom: 15px;" />
                         <div class="navigation-wrapper">
                             <nav class="cover-navigation cover-navigation--primary">
-                                <ul class="navigation" style="display: flex; gap: 15px; list-style: none; padding: 0;">
-                                    <li class="navigation__item" style="display: inline-block;"><a href="https://blog.ffoo.top/" target="_blank" class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">博客</a></li>
-                                    <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showToolModal()" class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">工具</a></li>
-                                    <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showLinksModal()" class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">友链</a></li>
-                                    <li class="navigation__item" style="display: inline-block;"><a href="javascript:void(0);" onclick="showCallMeModal()" class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">Call Me</a></li>
+                                <ul class="navigation" id="nav-list" style="display: flex; gap: 15px; list-style: none; padding: 0; flex-wrap: wrap; justify-content: center;">
                                 </ul>
-
                             </nav>
                         </div>
                     </div>
@@ -331,13 +326,7 @@
         <div class="qq-modal-content">
             <span class="close-modal" onclick="closeCallMeModal()">&times;</span>
             <div class="qq-id">联系方式</div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;">
-                <a href="javascript:void(0);" onclick="closeCallMeModal();showQQModal();" class="tool-btn">QQ</a>
-                <a href="javascript:void(0);" onclick="closeCallMeModal();showEmailModal();" class="tool-btn">邮箱</a>
-                <a href="https://github.com/LIF1FFF" target="_blank" class="tool-btn">GitHub</a>
-                <a href="javascript:void(0);" onclick="closeCallMeModal();showXcxModal();" class="tool-btn">微信小程序</a>
-                <a href="javascript:void(0);" onclick="closeCallMeModal();showGzhModal();" class="tool-btn">公众号</a>
-                <a href="javascript:void(0);" onclick="closeCallMeModal();showZanShangModal();" class="tool-btn">赞赏</a>
+            <div id="callme-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;">
             </div>
         </div>
     </div>
@@ -359,8 +348,7 @@
             <span class="close-modal" onclick="closeLinksModal()">&times;</span>
             <div class="qq-id">友情链接</div>
             <p style="font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 12px;">欢迎交换友链，请发送至 <span style="color: #4da6ff;">2660238308@qq.com</span></p>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;">
-                <a href="http://www.winapps.cc" target="_blank" class="tool-btn">共享资源站点</a>
+            <div id="friend-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;">
             </div>
         </div>
     </div>
@@ -371,16 +359,68 @@
         <div class="qq-modal-content">
             <span class="close-modal" onclick="closeToolModal()">&times;</span>
             <div class="qq-id">常用工具</div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;">
-                <a href="https://1665576.share.123pan.cn/123pan/QajA-FfP4h" class="tool-btn">个人网盘</a>
-                <a href="https://v.ffoo.top/admin" target="_blank" class="tool-btn">Cloudflare代理</a>
-                <a href="https://www.codebuddy.cn" target="_blank" class="tool-btn">codebuddy</a>
-                <a href="https://www.kkys03.com" target="_blank" class="tool-btn">可可影视</a>
+            <div id="tool-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;">
             </div>
         </div>
     </div>
     
     <script>
+        // ====== 加载按钮配置 ======
+        var SITE_CONFIG = null;
+        
+        function renderButton(item) {
+            var attrs = '';
+            if (item.url) {
+                attrs += ' href="' + item.url + '"';
+            } else {
+                attrs += ' href="javascript:void(0);"';
+            }
+            if (item.target) attrs += ' target="' + item.target + '"';
+            if (item.onclick) attrs += ' onclick="' + item.onclick + '"';
+            return '<a' + attrs + ' class="tool-btn">' + item.text + '</a>';
+        }
+        
+        function renderNavButton(item) {
+            var attrs = '';
+            if (item.url) {
+                attrs += ' href="' + item.url + '"';
+            } else {
+                attrs += ' href="javascript:void(0);"';
+            }
+            if (item.target) attrs += ' target="' + item.target + '"';
+            if (item.onclick) attrs += ' onclick="' + item.onclick + '"';
+            return '<li class="navigation__item" style="display: inline-block;">' +
+                '<a' + attrs + ' class="blog-button" style="display: inline-block; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.5); text-decoration: none; font-size: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); color: #ffffff;">' + item.text + '</a></li>';
+        }
+        
+        function loadConfig() {
+            fetch('./config.json?' + Date.now())
+                .then(function(r) { return r.json(); })
+                .then(function(cfg) {
+                    SITE_CONFIG = cfg;
+                    // 渲染导航按钮
+                    var navHtml = '';
+                    (cfg.nav || []).forEach(function(item) { navHtml += renderNavButton(item); });
+                    document.getElementById('nav-list').innerHTML = navHtml;
+                    // 渲染工具按钮
+                    var toolHtml = '';
+                    (cfg.tools || []).forEach(function(item) { toolHtml += renderButton(item); });
+                    document.getElementById('tool-list').innerHTML = toolHtml;
+                    // 渲染友链按钮
+                    var friendHtml = '';
+                    (cfg.friends || []).forEach(function(item) { friendHtml += renderButton(item); });
+                    document.getElementById('friend-list').innerHTML = friendHtml;
+                    // 渲染Call Me按钮
+                    var callmeHtml = '';
+                    (cfg.callme || []).forEach(function(item) { callmeHtml += renderButton(item); });
+                    document.getElementById('callme-list').innerHTML = callmeHtml;
+                })
+                .catch(function(e) {
+                    console.log('Config load failed, using defaults: ' + e.message);
+                });
+        }
+        loadConfig();
+
         // ====== 网站展示状态 ======
         // 1 = 正常主页   2 = 维护页面   3 = 备案页面
         // 地址栏始终显示 index.html

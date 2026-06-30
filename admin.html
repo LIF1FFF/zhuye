@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>主页后台管理</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+.container { max-width: 900px; margin: 0 auto; padding: 20px; }
+h1 { font-size: 24px; margin-bottom: 20px; color: #38bdf8; }
+.login-box { max-width: 400px; margin: 100px auto; background: #1e293b; padding: 30px; border-radius: 12px; }
+.login-box h2 { margin-bottom: 20px; color: #38bdf8; }
+.login-box label { display: block; margin-bottom: 6px; font-size: 14px; color: #94a3b8; }
+.login-box input { width: 100%; padding: 10px; border: 1px solid #334155; border-radius: 8px; background: #0f172a; color: #e2e8f0; font-size: 14px; margin-bottom: 16px; }
+.login-box input:focus { outline: none; border-color: #38bdf8; }
+.section { background: #1e293b; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+.section h3 { font-size: 18px; margin-bottom: 14px; color: #38bdf8; border-bottom: 1px solid #334155; padding-bottom: 8px; }
+.btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+.btn-primary { background: #38bdf8; color: #0f172a; font-weight: 600; }
+.btn-primary:hover { background: #0ea5e9; }
+.btn-danger { background: #ef4444; color: #fff; }
+.btn-danger:hover { background: #dc2626; }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn-green { background: #22c55e; color: #fff; }
+.btn-green:hover { background: #16a34a; }
+.btn-gray { background: #475569; color: #fff; }
+.btn-gray:hover { background: #334155; }
+.item-row { display: flex; align-items: center; gap: 10px; padding: 10px; background: #0f172a; border-radius: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.item-row input { flex: 1; min-width: 120px; padding: 8px 10px; border: 1px solid #334155; border-radius: 6px; background: #1e293b; color: #e2e8f0; font-size: 13px; }
+.item-row input:focus { outline: none; border-color: #38bdf8; }
+.item-row select { padding: 8px 10px; border: 1px solid #334155; border-radius: 6px; background: #1e293b; color: #e2e8f0; font-size: 13px; }
+.item-row .item-actions { display: flex; gap: 6px; }
+.add-btn { margin-top: 10px; }
+.status-bar { font-size: 13px; color: #94a3b8; margin-top: 10px; }
+.status-bar.success { color: #22c55e; }
+.status-bar.error { color: #ef4444; }
+.action-bar { display: flex; gap: 10px; margin-bottom: 20px; }
+.nav-btn { display: flex; gap: 10px; }
+@media (max-width: 600px) {
+  .item-row { flex-direction: column; align-items: stretch; }
+  .item-row input { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- 登录页 -->
+<div id="login-page" class="login-box">
+  <h2>🔐 后台登录</h2>
+  <label>GitHub 用户名</label>
+  <input type="text" id="gh-owner" placeholder="LIF1FFF">
+  <label>仓库名</label>
+  <input type="text" id="gh-repo" placeholder="zhuye">
+  <label>GitHub Token</label>
+  <input type="password" id="gh-token" placeholder="ghp_xxx">
+  <button class="btn btn-primary" onclick="login()" style="width:100%;">登录</button>
+  <p style="font-size:12px;color:#64748b;margin-top:10px;">Token 只在浏览器本地使用，不会上传到服务器</p>
+</div>
+
+<!-- 管理页 -->
+<div id="admin-page" style="display:none;">
+  <div class="container">
+    <div class="action-bar">
+      <h1 style="margin-bottom:0;flex:1;">🏠 主页后台管理</h1>
+      <button class="btn btn-gray" onclick="logout()">退出登录</button>
+    </div>
+
+    <div id="status-msg"></div>
+
+    <!-- 导航按钮 -->
+    <div class="section">
+      <h3>📍 顶部导航按钮</h3>
+      <div id="nav-items"></div>
+      <button class="btn btn-green btn-sm add-btn" onclick="addItem('nav')">+ 添加导航按钮</button>
+    </div>
+
+    <!-- 工具按钮 -->
+    <div class="section">
+      <h3>🔧 常用工具按钮</h3>
+      <div id="tools-items"></div>
+      <button class="btn btn-green btn-sm add-btn" onclick="addItem('tools')">+ 添加工具按钮</button>
+    </div>
+
+    <!-- 友链按钮 -->
+    <div class="section">
+      <h3>🔗 友情链接按钮</h3>
+      <div id="friends-items"></div>
+      <button class="btn btn-green btn-sm add-btn" onclick="addItem('friends')">+ 添加友链按钮</button>
+    </div>
+
+    <!-- Call Me 按钮 -->
+    <div class="section">
+      <h3>📞 联系方式按钮</h3>
+      <div id="callme-items"></div>
+      <button class="btn btn-green btn-sm add-btn" onclick="addItem('callme')">+ 添加联系方式按钮</button>
+    </div>
+
+    <div style="text-align:center;margin:30px 0;">
+      <button class="btn btn-primary" onclick="saveConfig()" style="font-size:16px;padding:12px 40px;">💾 保存全部更改</button>
+      <p class="status-bar" style="margin-top:10px;">修改后点击保存，会自动推送到 GitHub，网站即刻更新</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ====== 登录状态持久化 ======
+if (sessionStorage.getItem('zhuye_admin_logged') === '1') {
+  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('admin-page').style.display = 'block';
+  setTimeout(loadConfig, 200);
+}
+
+function login() {
+  var owner = document.getElementById('gh-owner').value.trim();
+  var repo = document.getElementById('gh-repo').value.trim();
+  var token = document.getElementById('gh-token').value.trim();
+  if (!owner || !repo || !token) { alert('请填写完整信息'); return; }
+  sessionStorage.setItem('zhuye_admin_owner', owner);
+  sessionStorage.setItem('zhuye_admin_repo', repo);
+  sessionStorage.setItem('zhuye_admin_token', token);
+  sessionStorage.setItem('zhuye_admin_logged', '1');
+  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('admin-page').style.display = 'block';
+  loadConfig();
+}
+
+function logout() {
+  sessionStorage.removeItem('zhuye_admin_logged');
+  location.reload();
+}
+
+function getCfg() {
+  return {
+    owner: sessionStorage.getItem('zhuye_admin_owner') || '',
+    repo: sessionStorage.getItem('zhuye_admin_repo') || '',
+    token: sessionStorage.getItem('zhuye_admin_token') || ''
+  };
+}
+
+function apiBase() {
+  var c = getCfg();
+  return 'https://api.github.com/repos/' + c.owner + '/' + c.repo;
+}
+
+function apiHeaders() {
+  var c = getCfg();
+  return {
+    'Authorization': 'token ' + (c.token || ''),
+    'Accept': 'application/vnd.github.v3+json'
+  };
+}
+
+// ====== 数据管理 ======
+var _config = { nav: [], tools: [], friends: [], callme: [] };
+var _sha = '';
+
+async function loadConfig() {
+  var msg = document.getElementById('status-msg');
+  msg.innerHTML = '<p class="status-bar">加载中...</p>';
+  try {
+    var resp = await fetch(apiBase() + '/contents/config.json', { headers: apiHeaders() });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status + ' - 请检查 Token 和仓库名');
+    var data = await resp.json();
+    _sha = data.sha;
+    var content = JSON.parse(decodeBase64(data.content));
+    _config = content;
+    renderAll();
+    msg.innerHTML = '<p class="status-bar success">✅ 配置加载成功</p>';
+  } catch(e) {
+    msg.innerHTML = '<p class="status-bar error">❌ 加载失败: ' + e.message + '</p>';
+  }
+}
+
+function decodeBase64(str) {
+  try {
+    return decodeURIComponent(atob(str.replace(/\s/g, '')).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+  } catch(e) {
+    return atob(str.replace(/\s/g, ''));
+  }
+}
+
+function encodeBase64(str) {
+  return btoa(unescape(encodeURIComponent(str)));
+}
+
+// ====== 渲染 ======
+function renderAll() {
+  renderSection('nav', 'nav-items');
+  renderSection('tools', 'tools-items');
+  renderSection('friends', 'friends-items');
+  renderSection('callme', 'callme-items');
+}
+
+function renderSection(key, containerId) {
+  var container = document.getElementById(containerId);
+  var items = _config[key] || [];
+  var html = '';
+  items.forEach(function(item, i) {
+    html += '<div class="item-row">' +
+      '<input type="text" value="' + escAttr(item.text || '') + '" placeholder="按钮文字" data-key="' + key + '" data-idx="' + i + '" data-field="text" onchange="updateField(this)">' +
+      '<input type="text" value="' + escAttr(item.url || '') + '" placeholder="链接地址" data-key="' + key + '" data-idx="' + i + '" data-field="url" onchange="updateField(this)">' +
+      '<select data-key="' + key + '" data-idx="' + i + '" data-field="target" onchange="updateField(this)">' +
+        '<option value="">默认</option>' +
+        '<option value="_blank"' + (item.target === '_blank' ? ' selected' : '') + '>新窗口</option>' +
+      '</select>' +
+      '<input type="text" value="' + escAttr(item.onclick || '') + '" placeholder="onclick 事件 (可选)" data-key="' + key + '" data-idx="' + i + '" data-field="onclick" onchange="updateField(this)">' +
+      '<div class="item-actions">' +
+        '<button class="btn btn-sm btn-gray" onclick="moveItem(\'' + key + '\',' + i + ',-1)">↑</button>' +
+        '<button class="btn btn-sm btn-gray" onclick="moveItem(\'' + key + '\',' + i + ',1)">↓</button>' +
+        '<button class="btn btn-sm btn-danger" onclick="deleteItem(\'' + key + '\',' + i + ')">删除</button>' +
+      '</div>' +
+    '</div>';
+  });
+  if (!items.length) html = '<p style="color:#64748b;font-size:13px;padding:10px;">暂无按钮，点击下方添加</p>';
+  container.innerHTML = html;
+}
+
+function updateField(el) {
+  var key = el.getAttribute('data-key');
+  var idx = parseInt(el.getAttribute('data-idx'));
+  var field = el.getAttribute('data-field');
+  if (!_config[key] || !_config[key][idx]) return;
+  _config[key][idx][field] = el.value;
+}
+
+function addItem(key) {
+  if (!_config[key]) _config[key] = [];
+  _config[key].push({ text: '新按钮', url: '' });
+  renderSection(key, key === 'nav' ? 'nav-items' : key === 'tools' ? 'tools-items' : key === 'friends' ? 'friends-items' : 'callme-items');
+}
+
+function deleteItem(key, idx) {
+  if (!confirm('确定删除这个按钮？')) return;
+  _config[key].splice(idx, 1);
+  renderAll();
+}
+
+function moveItem(key, idx, delta) {
+  var arr = _config[key];
+  var newIdx = idx + delta;
+  if (newIdx < 0 || newIdx >= arr.length) return;
+  var tmp = arr[idx];
+  arr[idx] = arr[newIdx];
+  arr[newIdx] = tmp;
+  renderAll();
+}
+
+function escAttr(s) {
+  return (s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// ====== 保存 ======
+async function saveConfig() {
+  var msg = document.getElementById('status-msg');
+  msg.innerHTML = '<p class="status-bar">保存中...</p>';
+  try {
+    var content = JSON.stringify(_config, null, 2);
+    var body = {
+      message: 'update: 更新主页按钮配置',
+      content: encodeBase64(content),
+      branch: 'main'
+    };
+    if (_sha) body.sha = _sha;
+    var resp = await fetch(apiBase() + '/contents/config.json', {
+      method: 'PUT',
+      headers: Object.assign({}, apiHeaders(), { 'Content-Type': 'application/json' }),
+      body: JSON.stringify(body)
+    });
+    if (!resp.ok) {
+      var err = await resp.json();
+      throw new Error(err.message || 'HTTP ' + resp.status);
+    }
+    var data = await resp.json();
+    _sha = data.content.sha;
+    msg.innerHTML = '<p class="status-bar success">✅ 保存成功！网站已自动更新，刷新主页即可看到效果。</p>';
+  } catch(e) {
+    msg.innerHTML = '<p class="status-bar error">❌ 保存失败: ' + e.message + '</p>';
+  }
+}
+</script>
+</body>
+</html>
