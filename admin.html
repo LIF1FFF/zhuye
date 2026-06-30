@@ -48,10 +48,6 @@ h1 { font-size: 24px; margin-bottom: 20px; color: #38bdf8; }
 <!-- 登录页 -->
 <div id="login-page" class="login-box">
   <h2>🔐 后台登录</h2>
-  <label>GitHub 用户名</label>
-  <input type="text" id="gh-owner" placeholder="LIF1FFF">
-  <label>仓库名</label>
-  <input type="text" id="gh-repo" placeholder="zhuye">
   <label>GitHub Token</label>
   <input type="password" id="gh-token" placeholder="ghp_xxx">
   <button class="btn btn-primary" onclick="login()" style="width:100%;">登录</button>
@@ -111,13 +107,13 @@ if (sessionStorage.getItem('zhuye_admin_logged') === '1') {
   setTimeout(loadConfig, 200);
 }
 
+// GitHub 用户名和仓库名固定，无需填写
+var GH_OWNER = 'LIF1FFF';
+var GH_REPO = 'zhuye';
+
 function login() {
-  var owner = document.getElementById('gh-owner').value.trim();
-  var repo = document.getElementById('gh-repo').value.trim();
   var token = document.getElementById('gh-token').value.trim();
-  if (!owner || !repo || !token) { alert('请填写完整信息'); return; }
-  sessionStorage.setItem('zhuye_admin_owner', owner);
-  sessionStorage.setItem('zhuye_admin_repo', repo);
+  if (!token) { alert('请输入 GitHub Token'); return; }
   sessionStorage.setItem('zhuye_admin_token', token);
   sessionStorage.setItem('zhuye_admin_logged', '1');
   document.getElementById('login-page').style.display = 'none';
@@ -130,23 +126,17 @@ function logout() {
   location.reload();
 }
 
-function getCfg() {
-  return {
-    owner: sessionStorage.getItem('zhuye_admin_owner') || '',
-    repo: sessionStorage.getItem('zhuye_admin_repo') || '',
-    token: sessionStorage.getItem('zhuye_admin_token') || ''
-  };
+function getToken() {
+  return sessionStorage.getItem('zhuye_admin_token') || '';
 }
 
 function apiBase() {
-  var c = getCfg();
-  return 'https://api.github.com/repos/' + c.owner + '/' + c.repo;
+  return 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO;
 }
 
 function apiHeaders() {
-  var c = getCfg();
   return {
-    'Authorization': 'token ' + (c.token || ''),
+    'Authorization': 'token ' + getToken(),
     'Accept': 'application/vnd.github.v3+json'
   };
 }
