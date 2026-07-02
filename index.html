@@ -1,0 +1,370 @@
+<!-- 网站状态开关：1=正常主页，2=网站维护，3=备案审核 -->
+<script>var SITE_STATUS = 1;</script>
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>反反</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: #000;
+            color: #fff;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 40px 20px 80px;
+        }
+
+        .title {
+            font-size: 80px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            margin-bottom: 50px;
+            color: #fff;
+            transform: translateY(-80px);
+        }
+
+        .title-small {
+            font-size: 40px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            color: #fff;
+            transform: translateY(-80px);
+        }
+
+        .about-text {
+            font-size: 18px;
+            line-height: 1.8;
+            max-width: 600px;
+            color: rgba(255, 255, 255, 0.85);
+            padding: 0 20px;
+        }
+
+        .status-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            display: inline-block;
+            padding: 10px 24px;
+            font-size: 15px;
+            font-weight: 400;
+            color: #fff;
+            text-decoration: none;
+            border: 2px solid #888;
+            border-radius: 8px;
+            background-color: transparent;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        .nav-btn:hover {
+            border-color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 320px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .modal-btn {
+            display: inline-block;
+            padding: 12px 20px;
+            font-size: 14px;
+            color: #fff;
+            text-decoration: none;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        .modal-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #888;
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            color: #fff;
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 56px;
+                margin-bottom: 40px;
+            }
+
+            .nav-btn {
+                padding: 9px 18px;
+                font-size: 14px;
+            }
+
+            .nav {
+                gap: 10px;
+            }
+
+            .modal-content {
+                min-width: 280px;
+                padding: 24px;
+            }
+
+            .modal-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="hero">
+        <!-- 状态1：正常主页 -->
+        <div id="status-normal" class="status-box">
+            <h1 class="title">反反</h1>
+
+            <nav class="nav">
+                <a href="https://blog.ffoo.top/" class="nav-btn" target="_blank">博客</a>
+                <button class="nav-btn" onclick="showModal('toolModal')">工具</button>
+                <button class="nav-btn" onclick="showModal('linksModal')">友链</button>
+                <button class="nav-btn" onclick="showModal('callMeModal')">Call Me</button>
+            </nav>
+        </div>
+
+        <!-- 状态2：维护页面 -->
+        <div id="status-maintenance" class="status-box" style="display:none;">
+            <h1 class="title-small">网站正在维护</h1>
+            <p style="font-size: 18px; color: rgba(255, 255, 255, 0.8);">请耐心等待</p>
+        </div>
+
+        <!-- 状态3：关于页面 -->
+        <div id="status-about" class="status-box" style="display:none;">
+            <h1 class="title-small">我的关于编程的资料储存</h1>
+            <p class="about-text">本网站是个人网站，主要内容是放置一些关于编程方面的资料，包括技术难点和解决方案，比如易语言方面的资料，用于后期方便自己查看和回顾。</p>
+        </div>
+    </main>
+
+    <!-- 工具弹窗 -->
+    <div id="toolModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('toolModal')">&times;</span>
+            <div class="modal-title">常用工具</div>
+            <div class="modal-grid">
+                <a href="https://1665576.share.123pan.cn/123pan/QajA-FfP4h" class="modal-btn" target="_blank">个人盘</a>
+                <a href="https://v.ffoo.top/admin" class="modal-btn" target="_blank">Cloudflare代理</a>
+                <a href="https://www.codebuddy.cn" class="modal-btn" target="_blank">CodeBuddy</a>
+                <a href="https://www.kkys03.com" class="modal-btn" target="_blank">看看影视</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 友链弹窗 -->
+    <div id="linksModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('linksModal')">&times;</span>
+            <div class="modal-title">友情链接</div>
+            <p style="font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 12px;">欢迎交换友链，请发送至 <a href="mailto:2660238308@qq.com" style="color: #4da6ff; text-decoration: none;">2660238308@qq.com</a></p>
+            <div class="modal-grid">
+                <a href="http://www.winapps.cc" class="modal-btn" target="_blank">共享资源站点</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call Me 弹窗 -->
+    <div id="callMeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('callMeModal')">&times;</span>
+            <div class="modal-title">联系方式</div>
+            <div class="modal-grid">
+                <button class="modal-btn" onclick="showModal('qqModal')">QQ</button>
+                <button class="modal-btn" onclick="showModal('emailModal')">邮箱</button>
+                <a href="https://github.com/LIF1FFF" class="modal-btn" target="_blank">GitHub</a>
+                <button class="modal-btn" onclick="showModal('zanShangModal')">赞赏</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QQ 弹窗 -->
+    <div id="qqModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('qqModal')">&times;</span>
+            <div class="modal-title">QQ</div>
+            <img src="qq.jpg" alt="QQ二维码" style="width: 200px; height: 200px; border-radius: 15px; margin-bottom: 15px;">
+            <p style="font-size: 24px; font-weight: bold; margin-bottom: 15px;">2660238308</p>
+            <button class="modal-btn" onclick="copyText('2660238308')">复制QQ号</button>
+        </div>
+    </div>
+
+    <!-- 邮箱弹窗 -->
+    <div id="emailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('emailModal')">&times;</span>
+            <div class="modal-title">邮箱</div>
+            <p style="font-size: 16px; margin-bottom: 20px;">2660238308@qq.com</p>
+            <button class="modal-btn" onclick="copyText('2660238308@qq.com')">复制邮箱</button>
+        </div>
+    </div>
+
+    <!-- 赞赏弹窗 -->
+    <div id="zanShangModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('zanShangModal')">&times;</span>
+            <div class="modal-title">赞赏</div>
+            <img src="zs.jpg" alt="赞赏码" style="width: 200px; height: 200px; border-radius: 15px; margin-bottom: 15px;">
+        </div>
+    </div>
+
+    <script>
+        // 根据状态显示对应内容
+        function applyStatus() {
+            var normal = document.getElementById('status-normal');
+            var maintenance = document.getElementById('status-maintenance');
+            var about = document.getElementById('status-about');
+
+            if (normal) normal.style.display = 'none';
+            if (maintenance) maintenance.style.display = 'none';
+            if (about) about.style.display = 'none';
+
+            if (SITE_STATUS === 2) {
+                if (maintenance) maintenance.style.display = 'flex';
+            } else if (SITE_STATUS === 3) {
+                if (about) about.style.display = 'flex';
+            } else {
+                if (normal) normal.style.display = 'flex';
+            }
+        }
+        applyStatus();
+
+        function showModal(id) {
+            document.getElementById(id).style.display = 'block';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        // 点击弹窗外部关闭
+        document.querySelectorAll('.modal').forEach(function(modal) {
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+
+        // 复制文本
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('已复制: ' + text);
+            }).catch(function() {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                alert('已复制: ' + text);
+            });
+        }
+    </script>
+
+    <!-- 底部版权和备案 -->
+    <footer style="position: fixed; bottom: 0; left: 0; right: 0; text-align: center; color: rgba(255, 255, 255, 0.55); font-size: 12px; padding: 15px;">
+        <p style="margin: 0;">
+            <span id="runtime" style="font-size: 12px; color: rgba(255, 255, 255, 0.55);"></span><br>
+            &copy; 2026 FFF. All Rights Reserved.&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://beian.miit.gov.cn/" target="_blank" style="color: rgba(255, 255, 255, 0.55); text-decoration: none; font-size: 12px;">豫ICP备2021016842号-3</a>
+        </p>
+    </footer>
+
+    <script>
+        // 网站运行时长计时
+        function showRuntime() {
+            const startTime = new Date('2020-12-01 00:00:00');
+            const now = new Date();
+            const diff = now - startTime;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('runtime').textContent = '网站已运行 ' + days + ' 天 ' + hours + ' 小时 ' + minutes + ' 分钟 ' + seconds + ' 秒';
+        }
+        
+        showRuntime();
+        setInterval(showRuntime, 1000);
+    </script>
+</body>
+</html>
