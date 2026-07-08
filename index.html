@@ -309,25 +309,6 @@
                 return false;
             });
 
-            // 检测开发者工具（定时+尺寸变化）
-            function detectDevTools() {
-                var threshold = 160;
-                var devOpen = false;
-                var check = function() {
-                    var widthThreshold = window.outerWidth - window.innerWidth > threshold;
-                    var heightThreshold = window.outerHeight - window.innerHeight > threshold;
-                    if (widthThreshold || heightThreshold) {
-                        if (!devOpen) {
-                            devOpen = true;
-                            document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;color:#fff;font-size:24px;">请关闭开发者工具后刷新页面</div>';
-                        }
-                    }
-                };
-                setInterval(check, 1000);
-                window.addEventListener('resize', check);
-            }
-            detectDevTools();
-
             // 阻止 debugger 断点（让调试器难以使用）
             setInterval(function() {
                 var start = new Date();
