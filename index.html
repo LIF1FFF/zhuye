@@ -340,21 +340,22 @@
     </div>
 
     <script>
-        // ========== 禁止调试/查看源码 ==========
+        // ========== 禁止调试/查看源码（仅保留快捷键与右键屏蔽）==========
+        // 说明：已移除原先每 500ms 执行 debugger 的定时器与「检测到 DevTools 就清空页面」逻辑。
+        // 前者持续占用主线程、打开调试器会造成反复断点卡顿；后者会误伤正常访客并破坏页面。
         (function() {
-            // 禁止 F12
             document.addEventListener('keydown', function(e) {
-                if (e.keyCode === 123) { e.preventDefault(); return false; }
-                // Ctrl+Shift+I
-                if (e.ctrlKey && e.shiftKey && e.keyCode === 73) { e.preventDefault(); return false; }
-                // Ctrl+Shift+J
-                if (e.ctrlKey && e.shiftKey && e.keyCode === 74) { e.preventDefault(); return false; }
-                // Ctrl+Shift+C
-                if (e.ctrlKey && e.shiftKey && e.keyCode === 67) { e.preventDefault(); return false; }
-                // Ctrl+U 查看源码
-                if (e.ctrlKey && e.keyCode === 85) { e.preventDefault(); return false; }
-                // Ctrl+S 保存
-                if (e.ctrlKey && e.keyCode === 83) { e.preventDefault(); return false; }
+                var k = (e.key || '').toLowerCase();
+                // F12
+                if (e.key === 'F12') { e.preventDefault(); return false; }
+                // Ctrl+Shift+I / J / C
+                if (e.ctrlKey && e.shiftKey && ['i', 'j', 'c'].indexOf(k) !== -1) {
+                    e.preventDefault(); return false;
+                }
+                // Ctrl+U 查看源码、Ctrl+S 保存
+                if (e.ctrlKey && ['u', 's'].indexOf(k) !== -1) {
+                    e.preventDefault(); return false;
+                }
             });
 
             // 禁止右键菜单
@@ -362,16 +363,6 @@
                 e.preventDefault();
                 return false;
             });
-
-            // 阻止 debugger 断点（让调试器难以使用）
-            setInterval(function() {
-                var start = new Date();
-                debugger;
-                var end = new Date();
-                if (end - start > 100) {
-                    document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;color:#fff;font-size:24px;">请关闭开发者工具后刷新页面</div>';
-                }
-            }, 500);
         })();
 
         // 根据状态显示对应内容
