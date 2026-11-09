@@ -1,13 +1,17 @@
-<!-- 网站状态开关：1=正常主页，2=网站维护，3=备案审核 -->
-<script>var SITE_STATUS = 1;</script>
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>反反的小世界</title>
+    <meta name="description" content="反反的小世界 — 存放编程资料、顺手工具与个人碎碎念的地方。">
+    <meta name="theme-color" content="#000000">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="反反的小世界">
+    <meta property="og:description" content="反反的小世界 — 存放编程资料、顺手工具与个人碎碎念的地方。">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <!-- 网站状态开关：1=正常主页，2=网站维护，3=备案审核 -->
+    <script>var SITE_STATUS = 1;</script>
     <style>
         * {
             margin: 0;
@@ -25,14 +29,22 @@
         }
 
         /* 全屏背景图：自动裁剪铺满，手机/平板/电脑通用 */
+        /* 全屏背景：<picture> 自动选 WebP / 移动端小图，不支持时回退 bg.jpg */
         .bg-image {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('bg.jpg') center / cover no-repeat;
             z-index: 0;
+            display: block;
+        }
+
+        .bg-image img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         /* 轻微遮罩，保证白色文字清晰可读 */
@@ -223,8 +235,12 @@
     </style>
 </head>
 <body>
-    <!-- 全屏背景图 -->
-    <div class="bg-image"></div>
+    <!-- 全屏背景：自动选 WebP / 移动端小图，不支持则回退 bg.jpg -->
+    <picture class="bg-image">
+        <source media="(max-width: 768px)" srcset="bg-small.webp" type="image/webp">
+        <source srcset="bg.webp" type="image/webp">
+        <img src="bg.jpg" alt="" aria-hidden="true">
+    </picture>
     <div class="bg-overlay"></div>
 
     <main class="hero">
@@ -233,22 +249,22 @@
             <h1 class="title">反反</h1>
 
             <nav class="nav">
-                <a href="https://p.ffoo.top" class="nav-btn" target="_blank">网盘</a>
-                <button class="nav-btn" onclick="showModal('toolModal')">工具</button>
-                <button class="nav-btn" onclick="showModal('linksModal')">友链</button>
-                <button class="nav-btn" onclick="showModal('callMeModal')">Call Me</button>
+                <a href="https://p.ffoo.top" class="nav-btn" target="_blank" rel="noopener noreferrer">网盘</a>
+                <button type="button" class="nav-btn" onclick="showModal('toolModal')">工具</button>
+                <button type="button" class="nav-btn" onclick="showModal('linksModal')">友链</button>
+                <button type="button" class="nav-btn" onclick="showModal('callMeModal')">Call Me</button>
             </nav>
         </div>
 
         <!-- 状态2：维护页面 -->
         <div id="status-maintenance" class="status-box" style="display:none;">
-            <h1 class="title-small">网站正在维护</h1>
+            <p class="title-small">网站正在维护</p>
             <p style="font-size: 18px; color: rgba(255, 255, 255, 0.8);">请耐心等待</p>
         </div>
 
         <!-- 状态3：关于页面 -->
         <div id="status-about" class="status-box" style="display:none;">
-            <h1 class="title-small">我的关于编程的资料储存</h1>
+            <p class="title-small">我的关于编程的资料储存</p>
             <p class="about-text">本网站是个人网站，主要内容是放置一些关于编程方面的资料，包括技术难点和解决方案，比如易语言方面的资料，用于后期方便自己查看和回顾。</p>
         </div>
     </main>
@@ -256,13 +272,13 @@
     <!-- 工具弹窗 -->
     <div id="toolModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('toolModal')">&times;</span>
+            <span class="close-modal" role="button" tabindex="0" aria-label="关闭" onclick="closeModal('toolModal')">&times;</span>
             <div class="modal-title">常用工具</div>
             <div class="modal-grid">
-                <a href="https://next.ffoo.top/next" class="modal-btn" target="_blank">Next代理</a>
-                <a href="https://www.kkys03.com" class="modal-btn" target="_blank">可可影视</a>
-                <a href="https://jz.ffoo.top" class="modal-btn" target="_blank">货运记账</a>
-                <a href="https://zd.ffoo.top" class="modal-btn" target="_blank">账单修改</a>
+                <a href="https://next.ffoo.top/next" class="modal-btn" target="_blank" rel="noopener noreferrer">Next代理</a>
+                <a href="https://www.kkys03.com" class="modal-btn" target="_blank" rel="noopener noreferrer">可可影视</a>
+                <a href="https://jz.ffoo.top" class="modal-btn" target="_blank" rel="noopener noreferrer">货运记账</a>
+                <a href="https://zd.ffoo.top" class="modal-btn" target="_blank" rel="noopener noreferrer">账单修改</a>
             </div>
         </div>
     </div>
@@ -270,11 +286,11 @@
     <!-- 友链弹窗 -->
     <div id="linksModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('linksModal')">&times;</span>
+            <span class="close-modal" role="button" tabindex="0" aria-label="关闭" onclick="closeModal('linksModal')">&times;</span>
             <div class="modal-title">友情链接</div>
             <p style="font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 12px;">欢迎交换友链，请发送至 <a href="mailto:2660238308@qq.com" style="color: #4da6ff; text-decoration: none;">2660238308@qq.com</a></p>
             <div class="modal-grid">
-                <a href="http://www.winapps.cc" class="modal-btn" target="_blank">共享资源站点</a>
+                <a href="https://www.winapps.cc" class="modal-btn" target="_blank" rel="noopener noreferrer">共享资源站点</a>
             </div>
         </div>
     </div>
@@ -282,13 +298,13 @@
     <!-- Call Me 弹窗 -->
     <div id="callMeModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('callMeModal')">&times;</span>
+            <span class="close-modal" role="button" tabindex="0" aria-label="关闭" onclick="closeModal('callMeModal')">&times;</span>
             <div class="modal-title">联系方式</div>
             <div class="modal-grid">
-                <button class="modal-btn" onclick="showModal('qqModal')">QQ</button>
-                <button class="modal-btn" onclick="showModal('emailModal')">邮箱</button>
-                <a href="https://github.com/LIF1FFF" class="modal-btn" target="_blank">GitHub</a>
-                <button class="modal-btn" onclick="showModal('zanShangModal')">赞赏</button>
+                <button type="button" class="modal-btn" onclick="showModal('qqModal')">QQ</button>
+                <button type="button" class="modal-btn" onclick="showModal('emailModal')">邮箱</button>
+                <a href="https://github.com/LIF1FFF" class="modal-btn" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <button type="button" class="modal-btn" onclick="showModal('zanShangModal')">赞赏</button>
             </div>
         </div>
     </div>
@@ -296,30 +312,30 @@
     <!-- QQ 弹窗 -->
     <div id="qqModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('qqModal')">&times;</span>
+            <span class="close-modal" role="button" tabindex="0" aria-label="关闭" onclick="closeModal('qqModal')">&times;</span>
             <div class="modal-title">QQ</div>
-            <img src="qq.jpg" alt="QQ二维码" style="width: 200px; height: 200px; border-radius: 15px; margin-bottom: 15px;">
+            <img src="qq.jpg" alt="QQ二维码" width="200" height="200" loading="lazy" decoding="async" style="width: 200px; height: 200px; border-radius: 15px; margin-bottom: 15px;">
             <p style="font-size: 24px; font-weight: bold; margin-bottom: 15px;">2660238308</p>
-            <button class="modal-btn" onclick="copyText('2660238308')">复制QQ号</button>
+            <button type="button" class="modal-btn" onclick="copyText('2660238308')">复制QQ号</button>
         </div>
     </div>
 
     <!-- 邮箱弹窗 -->
     <div id="emailModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('emailModal')">&times;</span>
+            <span class="close-modal" role="button" tabindex="0" aria-label="关闭" onclick="closeModal('emailModal')">&times;</span>
             <div class="modal-title">邮箱</div>
             <p style="font-size: 16px; margin-bottom: 20px;">2660238308@qq.com</p>
-            <button class="modal-btn" onclick="copyText('2660238308@qq.com')">复制邮箱</button>
+            <button type="button" class="modal-btn" onclick="copyText('2660238308@qq.com')">复制邮箱</button>
         </div>
     </div>
 
     <!-- 赞赏弹窗 -->
     <div id="zanShangModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('zanShangModal')">&times;</span>
+            <span class="close-modal" role="button" tabindex="0" aria-label="关闭" onclick="closeModal('zanShangModal')">&times;</span>
             <div class="modal-title">赞赏</div>
-            <img src="zs.jpg" alt="赞赏码" style="width: 200px; height: 200px; border-radius: 15px; margin-bottom: 15px;">
+            <img src="zs.jpg" alt="赞赏码" width="200" height="200" loading="lazy" decoding="async" style="width: 200px; height: 200px; border-radius: 15px; margin-bottom: 15px;">
         </div>
     </div>
 
@@ -382,6 +398,36 @@
             document.getElementById(id).style.display = 'block';
         }
 
+        // ESC 一键关闭所有弹窗
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal').forEach(function (m) {
+                    m.style.display = 'none';
+                });
+            }
+        });
+
+        // 弹窗无障碍语义：role / aria-modal / 关联标题
+        document.querySelectorAll('.modal').forEach(function (m) {
+            m.setAttribute('role', 'dialog');
+            m.setAttribute('aria-modal', 'true');
+            var t = m.querySelector('.modal-title');
+            if (t) {
+                t.id = t.id || (m.id + '-title');
+                m.setAttribute('aria-labelledby', t.id);
+            }
+        });
+
+        // 关闭按钮支持键盘（Enter / 空格）
+        document.querySelectorAll('.close-modal').forEach(function (btn) {
+            btn.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    closeModal(btn.closest('.modal').id);
+                }
+            });
+        });
+
         function closeModal(id) {
             document.getElementById(id).style.display = 'none';
         }
@@ -423,7 +469,7 @@
     <script>
         // 网站运行时长计时
         function showRuntime() {
-            const startTime = new Date('2020-12-01 00:00:00');
+            const startTime = new Date(2020, 11, 1);
             const now = new Date();
             const diff = now - startTime;
             
