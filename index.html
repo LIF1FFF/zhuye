@@ -28,8 +28,7 @@
             color: #fff;
         }
 
-        /* 全屏背景图：自动裁剪铺满，手机/平板/电脑通用 */
-        /* 全屏背景图：原始高清图，自动裁剪铺满，手机/平板/电脑通用 */
+        /* 全屏背景图：原始高清图，加载完成后淡入，避免首屏黑闪 */
         .bg-image {
             position: fixed;
             top: 0;
@@ -38,16 +37,22 @@
             height: 100%;
             background: url('bg.jpg') center / cover no-repeat;
             z-index: 0;
+            opacity: 0;
+            transition: opacity 0.9s ease;
         }
 
-        /* 轻微遮罩，保证白色文字清晰可读 */
+        .bg-image.ready {
+            opacity: 1;
+        }
+
+        /* 轻微遮罩，保证白色文字清晰可读；调淡以凸显高清背景 */
         .bg-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.35);
+            background: rgba(0, 0, 0, 0.28);
             z-index: 1;
             pointer-events: none;
         }
@@ -73,9 +78,21 @@
             font-size: clamp(48px, 10vw, 80px);
             font-weight: 700;
             letter-spacing: 4px;
-            margin-bottom: clamp(30px, 5vh, 50px);
+            margin-bottom: clamp(14px, 2vh, 20px);
             color: #fff;
             text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+            animation: riseIn 0.7s ease 0.15s both;
+        }
+
+        /* 标题下的一行浅色副标题 */
+        .subtitle {
+            font-size: clamp(12px, 1.6vw, 14px);
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.78);
+            text-shadow: 0 1px 10px rgba(0, 0, 0, 0.85);
+            margin-bottom: clamp(28px, 4vh, 42px);
+            animation: riseIn 0.7s ease 0.3s both;
         }
 
         .title-small {
@@ -106,10 +123,14 @@
             gap: 16px;
             flex-wrap: wrap;
             justify-content: center;
+            animation: riseIn 0.7s ease 0.45s both;
         }
 
         .nav-btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             padding: 11px 26px;
             font-size: 15px;
             font-weight: 500;
@@ -125,9 +146,26 @@
             cursor: pointer;
         }
 
+        .nav-btn svg {
+            width: 16px;
+            height: 16px;
+            flex: none;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
         .nav-btn:hover {
             border-color: #fff;
             background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
+        }
+
+        .nav-btn:active {
+            transform: translateY(0) scale(0.97);
         }
 
         /* 弹窗样式 */
@@ -140,6 +178,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.7);
+            animation: overlayIn 0.2s ease both;
         }
 
         .modal-content {
@@ -158,6 +197,7 @@
             max-height: 80vh;
             overflow-y: auto;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: popIn 0.24s cubic-bezier(0.2, 0.8, 0.3, 1) both;
         }
 
         .modal-title {
@@ -206,13 +246,18 @@
         }
 
         @media (max-width: 480px) {
-            .nav-btn {
-                padding: 10px 20px;
-                font-size: 14px;
+            /* 移动端按钮排成整齐的 2x2 等宽网格 */
+            .nav {
+                display: grid;
+                grid-template-columns: repeat(2, auto);
+                gap: 10px;
+                justify-content: center;
             }
 
-            .nav {
-                gap: 10px;
+            .nav-btn {
+                min-width: 132px;
+                padding: 10px 8px;
+                font-size: 14px;
             }
 
             .modal-content {
@@ -225,7 +270,35 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* 克制的入场动效：只做淡入与轻微位移 */
+        @keyframes riseIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: none; }
+        }
+
+        @keyframes overlayIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.94); }
+            to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* 尊重系统「减少动态效果」偏好 */
+        @media (prefers-reduced-motion: reduce) {
+            .bg-image, .bg-image.ready { opacity: 1; transition: none; }
+            .title, .subtitle, .nav, .modal, .modal-content { animation: none; }
+        }
     </style>
+    <noscript>
+        <style>
+            .bg-image { opacity: 1 !important; }
+            .title, .subtitle, .nav { animation: none !important; opacity: 1 !important; transform: none !important; }
+        </style>
+    </noscript>
 </head>
 <body>
     <!-- 全屏背景图 -->
@@ -236,12 +309,13 @@
         <!-- 状态1：正常主页 -->
         <div id="status-normal" class="status-box">
             <h1 class="title">反反</h1>
+            <p class="subtitle">编程资料 · 顺手工具 · 个人碎碎念</p>
 
             <nav class="nav">
-                <a href="https://p.ffoo.top" class="nav-btn" target="_blank" rel="noopener noreferrer">网盘</a>
-                <button type="button" class="nav-btn" onclick="showModal('toolModal')">工具</button>
-                <button type="button" class="nav-btn" onclick="showModal('linksModal')">友链</button>
-                <button type="button" class="nav-btn" onclick="showModal('callMeModal')">Call Me</button>
+                <a href="https://p.ffoo.top" class="nav-btn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>网盘</a>
+                <button type="button" class="nav-btn" onclick="showModal('toolModal')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>工具</button>
+                <button type="button" class="nav-btn" onclick="showModal('linksModal')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>友链</button>
+                <button type="button" class="nav-btn" onclick="showModal('callMeModal')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Call Me</button>
             </nav>
         </div>
 
@@ -374,6 +448,19 @@
         }
         applyStatus();
 
+        // 背景图（5.29MB）加载完成后淡入，消除首屏黑闪
+        (function () {
+            var bg = document.querySelector('.bg-image');
+            if (!bg) return;
+            var show = function () { bg.classList.add('ready'); };
+            var img = new Image();
+            img.onload = show;
+            img.onerror = show;      // 加载失败也显示，避免整页全黑
+            img.src = 'bg.jpg';
+            if (img.complete) show();
+            setTimeout(show, 3000); // 兜底
+        })();
+
         function showModal(id) {
             document.getElementById(id).style.display = 'block';
         }
@@ -439,9 +526,9 @@
     </script>
 
     <!-- 底部版权和备案 -->
-    <footer style="position: fixed; bottom: 0; left: 0; right: 0; text-align: center; color: rgba(255, 255, 255, 0.55); font-size: 12px; padding: 15px;">
+    <footer style="position: fixed; bottom: 0; left: 0; right: 0; text-align: center; color: rgba(255, 255, 255, 0.66); font-size: 12px; padding: 15px;">
         <p style="margin: 0;">
-            <span id="runtime" style="font-size: 12px; color: rgba(255, 255, 255, 0.55);"></span><br>
+            <span id="runtime" style="font-size: 12px; color: rgba(255, 255, 255, 0.66); font-variant-numeric: tabular-nums; letter-spacing: 0.3px;"></span><br>
             &copy; 2026 FFF. All Rights Reserved.
         </p>
     </footer>
@@ -456,13 +543,12 @@
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
             
-            document.getElementById('runtime').textContent = '网站已运行 ' + days + ' 天 ' + hours + ' 小时 ' + minutes + ' 分钟 ' + seconds + ' 秒';
+            document.getElementById('runtime').textContent = '网站已运行 ' + days + ' 天 ' + hours + ' 小时 ' + minutes + ' 分钟';
         }
         
         showRuntime();
-        setInterval(showRuntime, 1000);
+        setInterval(showRuntime, 30000);
     </script>
 <script>
 var _hmt = _hmt || [];
