@@ -78,21 +78,10 @@
             font-size: clamp(48px, 10vw, 80px);
             font-weight: 700;
             letter-spacing: 4px;
-            margin-bottom: clamp(14px, 2vh, 20px);
+            margin-bottom: clamp(30px, 5vh, 50px);
             color: #fff;
             text-shadow: 0 2px 12px rgba(0,0,0,0.5);
             animation: riseIn 0.7s ease 0.15s both;
-        }
-
-        /* 标题下的一行浅色副标题 */
-        .subtitle {
-            font-size: clamp(12px, 1.6vw, 14px);
-            font-weight: 400;
-            letter-spacing: 3px;
-            color: rgba(255, 255, 255, 0.78);
-            text-shadow: 0 1px 10px rgba(0, 0, 0, 0.85);
-            margin-bottom: clamp(28px, 4vh, 42px);
-            animation: riseIn 0.7s ease 0.3s both;
         }
 
         .title-small {
@@ -123,7 +112,7 @@
             gap: 16px;
             flex-wrap: wrap;
             justify-content: center;
-            animation: riseIn 0.7s ease 0.45s both;
+            animation: riseIn 0.7s ease 0.3s both;
         }
 
         .nav-btn {
@@ -290,13 +279,13 @@
         /* 尊重系统「减少动态效果」偏好 */
         @media (prefers-reduced-motion: reduce) {
             .bg-image, .bg-image.ready { opacity: 1; transition: none; }
-            .title, .subtitle, .nav, .modal, .modal-content { animation: none; }
+            .title, .nav, .modal, .modal-content { animation: none; }
         }
     </style>
     <noscript>
         <style>
             .bg-image { opacity: 1 !important; }
-            .title, .subtitle, .nav { animation: none !important; opacity: 1 !important; transform: none !important; }
+            .title, .nav { animation: none !important; opacity: 1 !important; transform: none !important; }
         </style>
     </noscript>
 </head>
@@ -309,7 +298,6 @@
         <!-- 状态1：正常主页 -->
         <div id="status-normal" class="status-box">
             <h1 class="title">反反</h1>
-            <p class="subtitle">编程资料 · 顺手工具 · 个人碎碎念</p>
 
             <nav class="nav">
                 <a href="https://p.ffoo.top" class="nav-btn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>网盘</a>
@@ -526,9 +514,9 @@
     </script>
 
     <!-- 底部版权和备案 -->
-    <footer style="position: fixed; bottom: 0; left: 0; right: 0; text-align: center; color: rgba(255, 255, 255, 0.66); font-size: 12px; padding: 15px;">
+    <footer style="position: fixed; bottom: 0; left: 0; right: 0; text-align: center; color: rgba(255, 255, 255, 0.66); font-size: 11px; line-height: 1.5; padding: 9px 12px;">
         <p style="margin: 0;">
-            <span id="runtime" style="font-size: 12px; color: rgba(255, 255, 255, 0.66); font-variant-numeric: tabular-nums; letter-spacing: 0.3px;"></span><br>
+            <span id="runtime" style="font-size: 11px; color: rgba(255, 255, 255, 0.66); font-variant-numeric: tabular-nums; letter-spacing: 0.3px;"></span><br>
             &copy; 2026 FFF. All Rights Reserved.
         </p>
     </footer>
@@ -543,12 +531,13 @@
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            
-            document.getElementById('runtime').textContent = '网站已运行 ' + days + ' 天 ' + hours + ' 小时 ' + minutes + ' 分钟';
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('runtime').textContent = '网站已运行 ' + days + ' 天 ' + hours + ' 小时 ' + minutes + ' 分钟 ' + seconds + ' 秒';
         }
         
         showRuntime();
-        setInterval(showRuntime, 30000);
+        setInterval(showRuntime, 1000);
     </script>
 <script>
 var _hmt = _hmt || [];
