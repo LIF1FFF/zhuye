@@ -206,6 +206,15 @@
             gap: 12px;
         }
 
+        /* 工具弹窗为奇数项时，最后一项居中，避免 2+1 布局右下空缺 */
+        @media (min-width: 481px) {
+            #toolModal .modal-grid .modal-btn:nth-child(odd):last-child {
+                grid-column: 1 / -1;
+                justify-self: center;
+                width: calc((100% - 12px) / 2);
+            }
+        }
+
         .modal-btn {
             display: inline-block;
             padding: 12px 20px;
@@ -331,7 +340,6 @@
             <div class="modal-title">常用工具</div>
             <div class="modal-grid">
                 <a href="https://next.ffoo.top/next" class="modal-btn" target="_blank" rel="noopener noreferrer">Next代理</a>
-                <a href="https://www.kkys03.com" class="modal-btn" target="_blank" rel="noopener noreferrer">可可影视</a>
                 <a href="https://jz.ffoo.top" class="modal-btn" target="_blank" rel="noopener noreferrer">货运记账</a>
                 <a href="https://zd.ffoo.top" class="modal-btn" target="_blank" rel="noopener noreferrer">账单修改</a>
             </div>
