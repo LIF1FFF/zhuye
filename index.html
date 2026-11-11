@@ -75,13 +75,28 @@
         }
 
         .title {
+            /* 轮播周期：只改这一个数就能调整两个标题各停留多久 */
+            --swap-duration: 7s;
+            display: grid;
+            justify-items: center;
             font-size: clamp(48px, 10vw, 80px);
             font-weight: 700;
-            letter-spacing: 4px;
+            letter-spacing: 0;
             margin-bottom: clamp(30px, 5vh, 50px);
             color: #fff;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
             animation: riseIn 0.7s ease 0.15s both;
+        }
+
+        /* 两个标题叠在同一格：容器尺寸取较宽者，切换时下方按钮不会跳动 */
+        .title-word {
+            grid-area: 1 / 1;
+            letter-spacing: 4px;
+            animation: swapA var(--swap-duration) ease-in-out infinite;
+        }
+
+        .title-word--alt {
+            animation-name: swapB;
         }
 
         .title-small {
@@ -289,10 +304,38 @@
             to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
         }
 
-        /* 尊重系统「减少动态效果」偏好 */
+        /* 「反反」与「FFF」交叉淡入淡出：各停留约 3 秒，中间约 0.5 秒完成交接 */
+        @keyframes swapA {
+            0%, 43%  { opacity: 1; transform: translateY(0); }
+            50%, 93% { opacity: 0; transform: translateY(-8px); }
+            100%     { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes swapB {
+            0%, 43%  { opacity: 0; transform: translateY(8px); }
+            50%, 93% { opacity: 1; transform: translateY(0); }
+            100%     { opacity: 0; transform: translateY(8px); }
+        }
+
+        /* 系统开启「减少动态效果」时只去掉位移，仍保留纯淡入淡出轮播 */
+        @keyframes fadeA {
+            0%, 43%  { opacity: 1; }
+            50%, 93% { opacity: 0; }
+            100%     { opacity: 1; }
+        }
+
+        @keyframes fadeB {
+            0%, 43%  { opacity: 0; }
+            50%, 93% { opacity: 1; }
+            100%     { opacity: 0; }
+        }
+
+        /* 尊重系统「减少动态效果」偏好：去掉位移，但轮播照常（纯透明度变化） */
         @media (prefers-reduced-motion: reduce) {
             .bg-image, .bg-image.ready { opacity: 1; transition: none; }
             .title, .nav, .modal, .modal-content { animation: none; }
+            .title-word { animation-name: fadeA; }
+            .title-word--alt { animation-name: fadeB; }
         }
     </style>
     <noscript>
@@ -310,7 +353,10 @@
     <main class="hero">
         <!-- 状态1：正常主页 -->
         <div id="status-normal" class="status-box">
-            <h1 class="title">反反</h1>
+            <h1 class="title" aria-label="反反 FFF">
+                <span class="title-word" aria-hidden="true">反反</span>
+                <span class="title-word title-word--alt" aria-hidden="true">FFF</span>
+            </h1>
 
             <nav class="nav">
                 <a href="https://1665576.share.123pan.cn/123pan/QajA-J9rIh" class="nav-btn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>网盘</a>
