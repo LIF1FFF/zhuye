@@ -75,13 +75,43 @@
         }
 
         .title {
+            /* 轮播周期：只改这一个数就能调整两个标题各停留多久 */
+            --swap-duration: 7s;
+            display: grid;
+            justify-items: center;
             font-size: clamp(48px, 10vw, 80px);
             font-weight: 700;
-            letter-spacing: 4px;
+            letter-spacing: 0;
             margin-bottom: clamp(30px, 5vh, 50px);
             color: #fff;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
             animation: riseIn 0.7s ease 0.15s both;
+            /* 3D 透视：数值越小翻转的纵深感越强 */
+            perspective: 900px;
+        }
+
+        /* 3D 翻转容器：每半个周期绕 X 轴转 180°，全程单向旋转、不回摆 */
+        .title-rotator {
+            display: grid;
+            justify-items: center;
+            grid-area: 1 / 1;
+            transform-style: preserve-3d;
+            animation: spin3d var(--swap-duration) cubic-bezier(0.65, 0.02, 0.3, 0.98) infinite;
+            will-change: transform;
+        }
+
+        /* 两个标题叠在同一格：容器尺寸取较宽者，切换时下方按钮不会跳动 */
+        .title-face {
+            grid-area: 1 / 1;
+            letter-spacing: 4px;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform: rotateX(0deg) translateZ(1px);
+        }
+
+        /* 第二面朝后放置，翻转 180° 后才正对观众 */
+        .title-face--alt {
+            transform: rotateX(180deg) translateZ(1px);
         }
 
         .title-small {
@@ -289,16 +319,52 @@
             to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
         }
 
-        /* 尊重系统「减少动态效果」偏好 */
+        /* 「反反」与「FFF」3D 翻转轮播：
+           0~43% 显示「反反」，43~50% 翻转 180° 交给「FFF」；
+           50~93% 显示「FFF」，93~100% 再转 180° 回到「反反」。
+           一个周期正好转满 360°，循环处视觉无跳变。 */
+        @keyframes spin3d {
+            0%, 43%   { transform: rotateX(0deg); }
+            50%, 93%  { transform: rotateX(-180deg); }
+            100%      { transform: rotateX(-360deg); }
+        }
+
+        /* 系统开启「减少动态效果」时，退回纯淡入淡出轮播 */
+        @keyframes fadeA {
+            0%, 43%  { opacity: 1; }
+            50%, 93% { opacity: 0; }
+            100%     { opacity: 1; }
+        }
+
+        @keyframes fadeB {
+            0%, 43%  { opacity: 0; }
+            50%, 93% { opacity: 1; }
+            100%     { opacity: 0; }
+        }
+
+        /* 尊重系统「减少动态效果」偏好：关闭 3D 旋转，只做纯透明度轮播 */
         @media (prefers-reduced-motion: reduce) {
             .bg-image, .bg-image.ready { opacity: 1; transition: none; }
             .title, .nav, .modal, .modal-content { animation: none; }
+            .title-rotator { animation: none; transform: none; }
+            .title-face {
+                transform: none;
+                backface-visibility: visible;
+                -webkit-backface-visibility: visible;
+                animation: fadeA var(--swap-duration) ease-in-out infinite;
+            }
+            .title-face--alt {
+                transform: none;
+                animation-name: fadeB;
+            }
         }
     </style>
     <noscript>
         <style>
             .bg-image { opacity: 1 !important; }
             .title, .nav { animation: none !important; opacity: 1 !important; transform: none !important; }
+            .title-rotator { animation: none !important; transform: none !important; }
+            .title-face--alt { display: none !important; }
         </style>
     </noscript>
 </head>
@@ -310,7 +376,12 @@
     <main class="hero">
         <!-- 状态1：正常主页 -->
         <div id="status-normal" class="status-box">
-            <h1 class="title">反反</h1>
+            <h1 class="title" aria-label="反反 FFF">
+                <span class="title-rotator">
+                    <span class="title-face" aria-hidden="true">反反</span>
+                    <span class="title-face title-face--alt" aria-hidden="true">FFF</span>
+                </span>
+            </h1>
 
             <nav class="nav">
                 <a href="https://1665576.share.123pan.cn/123pan/QajA-J9rIh" class="nav-btn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>网盘</a>
